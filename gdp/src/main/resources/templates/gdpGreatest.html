@@ -1,0 +1,18 @@
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Display Qualifying GDPs</title>
+</head>
+<body>
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>GDP</th>
+    </tr>
+    <tr th:each="g : ${gdpList}">
+        <td th:text="${g.name}"/>
+        <td th:text="${g.GDP}"/>
+    </tr>
+</table>
+</body>
+</html>
