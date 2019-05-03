@@ -1,6 +1,7 @@
 package com.lambdaschool.gdp.controller;
 
 import com.lambdaschool.gdp.GDPApplication;
+import com.lambdaschool.gdp.exceptions.ResourceNotFoundException;
 import com.lambdaschool.gdp.model.GDP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +51,10 @@ public class GDPController
 
         logger.info(String.format("/gdp/%s accessed at %s.", userParams, simpleDateFormat.format(new Date())));
         result = GDPApplication.appGDPList.findGDP(gdp -> gdp.getName().toLowerCase().equals(name.toLowerCase()));
+        if (result == null)
+        {
+            throw new ResourceNotFoundException(String.format("Couldn't find GDP data for country with name: %s", userParams));
+        }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -62,6 +67,10 @@ public class GDPController
 
         logger.info(String.format("/gdp/%s accessed at %s.", userParams, simpleDateFormat.format(new Date())));
         result = GDPApplication.appGDPList.findGDP(gdp -> gdp.getId() == id);
+        if (result == null)
+        {
+            throw new ResourceNotFoundException(String.format("Couldn't find GDP data for country with id: %s", userParams));
+        }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -88,7 +97,6 @@ public class GDPController
 
         ModelAndView mav = new ModelAndView();
 
-
         mav.setViewName("gdp");
         GDPApplication.appGDPList.gdpList.sort((g1, g2) -> Integer.parseInt(g2.getGDP()) - Integer.parseInt(g1.getGDP()));
         mav.addObject("gdpList", GDPApplication.appGDPList.gdpList);
@@ -107,6 +115,10 @@ public class GDPController
         mav.setViewName("gdpGreatest");
         result = GDPApplication.appGDPList.findGDPs(gdp -> Integer.parseInt(gdp.getGDP()) > GDP);
         result.sort((g1, g2) -> Integer.parseInt(g2.getGDP()) - Integer.parseInt(g1.getGDP()));
+        if (result.size() == 0)
+        {
+            throw new ResourceNotFoundException(String.format("Couldn't find GDP data for countries with GDP greater than %d", GDP));
+        }
         mav.addObject("gdpList", result);
 
         return mav;
