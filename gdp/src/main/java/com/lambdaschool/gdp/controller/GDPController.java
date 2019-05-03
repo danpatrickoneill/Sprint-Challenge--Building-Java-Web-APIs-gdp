@@ -112,15 +112,17 @@ public class GDPController
         ModelAndView mav = new ModelAndView();
         ArrayList<GDP> result;
 
-        mav.setViewName("gdpGreatest");
+        mav.setViewName("gdp");
         result = GDPApplication.appGDPList.findGDPs(gdp -> Integer.parseInt(gdp.getGDP()) > GDP);
         result.sort((g1, g2) -> Integer.parseInt(g2.getGDP()) - Integer.parseInt(g1.getGDP()));
-        if (result.size() == 0)
+        if (result.isEmpty())
         {
             throw new ResourceNotFoundException(String.format("Couldn't find GDP data for countries with GDP greater than %d", GDP));
         }
-        mav.addObject("gdpList", result);
 
-        return mav;
+            mav.addObject("gdpList", result);
+
+            return mav;
+
     }
 }

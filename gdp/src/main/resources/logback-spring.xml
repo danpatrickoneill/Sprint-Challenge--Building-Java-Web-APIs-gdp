@@ -68,6 +68,5 @@
 
     <logger name="org.apache.tomcat" level="OFF">
         <appender-ref ref="TOMCAT"/>
-        <appender-ref ref="STDOUT"/>
     </logger>
 </configuration>
